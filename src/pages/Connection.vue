@@ -41,6 +41,8 @@
 </template>
 
 <script>
+    import main from '../js/main'
+
     export default {
         name: "Connection",
         data() {
@@ -64,22 +66,17 @@
             }
         }, methods: {
             submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
+                this.$refs[formName].validate(async (valid) => {
                     if (valid) {
-                        alert('submit!');
-                        window.axios({
-                            method: "post",
-                            url: "connection/",
-                            data: this.connection
-                        }).then(data => {
-                            this.$emit("click", {
-                                name: data.name,
-                                type: data.type,
-                                sourceId: data.sourceId,
-                                leaf: true
-                            });
+                        const data = await main.createConnection(this.connection)
 
-                        })
+                        this.$emit("click", {
+                            name: data.name,
+                            type: data.type,
+                            sourceId: data.sourceId,
+                            connection: data,
+                            leaf: true
+                        });
                     } else {
                         console.log('error submit!!');
                         return false;

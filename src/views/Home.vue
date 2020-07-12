@@ -25,7 +25,7 @@
 
 <script>
     import Connection from "../pages/Connection";
-    import {getDataBase} from "../js/main"
+    import main from "../js/main"
 
     export default {
         name: 'Home',
@@ -45,21 +45,30 @@
         methods: {
 
             async nodeClick(data, node) {
-                console.log(node.level);
-                console.log(data.name, '222');
-                console.log(data.sourceId, '222');
+                if (node.childNodes.length != 0) return
 
-
-                if (data.sourceId != null) {
-                    const dataBase = await getDataBase(data.type, data.sourceId);
+                if (data.sourceId != null && node.level === 1) {
+                    const dataBase = await main.getDataBase(data.type, data.sourceId);
                     let nodeList = []
                     for (let i = 0; i < dataBase.length; i++) {
                         nodeList.push({name: dataBase[i]})
                     }
-                  node.childNodes = [];
+                    node.childNodes = [];
                     node.doCreateChildren(nodeList)
                     // this.loadNode(node,)
                     node.expand()
+                } else (node.level === 2)
+                {
+
+
+                    let connectionObj = node.parent.data.connection;
+                    console.log(connectionObj);
+                    connectionObj.dataBaseName = node.label
+                    console.log(connectionObj);
+                    // let connectionData = await main.createConnection(connectionObj)
+                    // node.data["a"] = connectionData;
+
+
                 }
             }
             ,
