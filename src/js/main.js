@@ -1,11 +1,7 @@
-const getDataBase = async (type, sourceId) => {
-    let api = "";
-    console.log(type);
-    console.log(sourceId);
-    if (type === 'mysql')
-        api = "mysql/database/"
+
+const getDataBase = async (sourceId) => {
     return await window.axios({
-        url: api + sourceId,
+        url: 'v1/database/' + sourceId,
         metnod: 'get'
     })
 }
@@ -28,7 +24,16 @@ const getColumns = async (sourceId, tableName) => {
     return data;
 
 }
+
+const getTables = async (sourceId) => {
+
+    const data = await window.axios({
+        method: 'get',
+        url: 'v1/table/' + sourceId
+    })
+    return data
+}
 const main = {
-    createConnection, getDataBase, getColumns
+    createConnection, getDataBase, getColumns, getTables
 }
 export default main

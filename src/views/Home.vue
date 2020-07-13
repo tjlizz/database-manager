@@ -10,8 +10,12 @@
                 ></el-tree>
             </el-aside>
             <el-main>
+                <el-select placeholder="请选择" v-model="selectCon">
+                    <el-option v-for="item in connections" :label="item.name" :value="item.sourceId"
+                               :key="item.sourceId"></el-option>
+                </el-select>
                 <el-button @click="dialogisible=true">新增</el-button>
-                <span v-for="rs in items" :key="rs">{{rs}}</span>
+                <sql-exec></sql-exec>
                 <sql-panel :table-name="tableName" :source-id="sourceId"></sql-panel>
                 <el-dialog :visible.sync="dialogisible">
                     <connection @click="addItem"></connection>
@@ -28,12 +32,14 @@
     import Connection from "../pages/Connection";
     import main from "../js/main"
     import SqlPanel from "../pages/SqlPanel";
+    import SqlExec from "../pages/SqlExec";
 
     export default {
         name: 'Home',
         data() {
             return {
-                sourceId: '93238e2e-dfe4-4bea-9b7b-7a35d42db858',
+                selectCon: '',
+                sourceId: 'da33b70a-1358-4254-97a1-c1c5b5c7474a',
                 tableName: 'test',
                 props: {
                     label: 'name',
@@ -52,7 +58,7 @@
                 if (node.childNodes.length != 0) return
 
                 if (data.sourceId != null && node.level === 1) {
-                    const dataBase = await main.getDataBase(data.type, data.sourceId);
+                    const dataBase = await main.getDataBase(data.sourceId);
                     let nodeList = []
                     for (let i = 0; i < dataBase.length; i++) {
                         nodeList.push({name: dataBase[i]})
@@ -63,14 +69,20 @@
                     node.expand()
                 } else (node.level === 2)
                 {
-
+                    if (data.connection) return
 
                     let connectionObj = node.parent.data.connection;
                     console.log(connectionObj);
-                    connectionObj.dataBaseName = node.label
-                    console.log(connectionObj);
-                    // let connectionData = await main.createConnection(connectionObj)
-                    // node.data["a"] = connectionData;
+                    data['connection'] = connectionObj
+                    const tables = await main.getTables(connectionObj.sourceId)
+                    let nodeList = []
+                    for (let i = 0; i < tables.length; i++) {
+                        nodeList.push({name: tables[i].tableName})
+                    }
+                    node.childNodes = [];
+                    node.doCreateChildren(nodeList)
+                    // this.loadNode(node,)
+                    node.expand()
 
 
                 }
@@ -83,6 +95,7 @@
             }
         },
         components: {
+            SqlExec,
             Connection,
             SqlPanel
         }
