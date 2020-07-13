@@ -12,6 +12,7 @@
             <el-main>
                 <el-button @click="dialogisible=true">新增</el-button>
                 <span v-for="rs in items" :key="rs">{{rs}}</span>
+                <sql-panel :table-name="tableName" :source-id="sourceId"></sql-panel>
                 <el-dialog :visible.sync="dialogisible">
                     <connection @click="addItem"></connection>
 
@@ -26,11 +27,14 @@
 <script>
     import Connection from "../pages/Connection";
     import main from "../js/main"
+    import SqlPanel from "../pages/SqlPanel";
 
     export default {
         name: 'Home',
         data() {
             return {
+                sourceId: '93238e2e-dfe4-4bea-9b7b-7a35d42db858',
+                tableName: 'test',
                 props: {
                     label: 'name',
                     children: 'zones',
@@ -75,10 +79,12 @@
 
             addItem(item) {
                 this.connections.push(item)
+                this.dialogisible = false
             }
         },
         components: {
-            Connection
+            Connection,
+            SqlPanel
         }
     }
 </script>

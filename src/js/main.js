@@ -18,7 +18,17 @@ const createConnection = async (connection) => {
     return data
 }
 
-const main = {
-    createConnection, getDataBase
+const getColumns = async (sourceId, tableName) => {
+
+    const data = await window.axios({
+        method: 'post',
+        url: 'v1/columns/' + sourceId,
+        data: {tableName}
+    })
+    return data;
+
 }
-export  default  main
+const main = {
+    createConnection, getDataBase, getColumns
+}
+export default main
