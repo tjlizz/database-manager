@@ -2,12 +2,8 @@
     <div class="home">
 
         <el-container>
-            <el-aside width="200px">
-                <el-tree @node-click="nodeClick" :data="connections" :expand-on-click-node="false"
-                         :props="props"
-
-                         lazy
-                ></el-tree>
+            <el-aside width="500px">
+                <data-base-panel></data-base-panel>
             </el-aside>
             <el-main>
                 <el-select placeholder="请选择" v-model="selectCon">
@@ -30,9 +26,9 @@
 
 <script>
     import Connection from "../pages/Connection";
-    import main from "../js/main"
     import SqlPanel from "../pages/SqlPanel";
     import SqlExec from "../pages/SqlExec";
+    import DataBasePanel from "../pages/DataBasePanel";
 
     export default {
         name: 'Home',
@@ -53,48 +49,13 @@
             }
         },
         methods: {
-
-            async nodeClick(data, node) {
-                if (node.childNodes.length != 0) return
-
-                if (data.sourceId != null && node.level === 1) {
-                    const dataBase = await main.getDataBase(data.sourceId);
-                    let nodeList = []
-                    for (let i = 0; i < dataBase.length; i++) {
-                        nodeList.push({name: dataBase[i]})
-                    }
-                    node.childNodes = [];
-                    node.doCreateChildren(nodeList)
-                    // this.loadNode(node,)
-                    node.expand()
-                } else (node.level === 2)
-                {
-                    if (data.connection) return
-
-                    let connectionObj = node.parent.data.connection;
-                    console.log(connectionObj);
-                    data['connection'] = connectionObj
-                    const tables = await main.getTables(connectionObj.sourceId)
-                    let nodeList = []
-                    for (let i = 0; i < tables.length; i++) {
-                        nodeList.push({name: tables[i].tableName})
-                    }
-                    node.childNodes = [];
-                    node.doCreateChildren(nodeList)
-                    // this.loadNode(node,)
-                    node.expand()
-
-
-                }
-            }
-            ,
-
             addItem(item) {
                 this.connections.push(item)
                 this.dialogisible = false
             }
         },
         components: {
+            DataBasePanel,
             SqlExec,
             Connection,
             SqlPanel
