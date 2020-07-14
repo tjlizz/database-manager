@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import axios from './axios/index'
 
 window.axios = axios
-import '//at.alicdn.com/t/font_1940883_sm35vgt7zh.js'
+// import '//at.alicdn.com/t/font_1940883_sm35vgt7zh.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);

@@ -1,4 +1,3 @@
-
 const getDataBase = async (sourceId) => {
     return await window.axios({
         url: 'v1/database/' + sourceId,
@@ -25,11 +24,11 @@ const getColumns = async (sourceId, tableName) => {
 
 }
 
-const getTables = async (sourceId) => {
+const getTables = async (sourceId, dataBaseName) => {
 
     const data = await window.axios({
         method: 'get',
-        url: 'v1/table/' + sourceId
+        url: 'v1/table/' + sourceId + "/" + dataBaseName
     })
     return data
 }

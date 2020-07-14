@@ -3,13 +3,9 @@
 
         <el-container>
             <el-aside width="500px">
-                <data-base-panel></data-base-panel>
+                <data-base-panel :connections="connections"></data-base-panel>
             </el-aside>
             <el-main>
-                <el-select placeholder="请选择" v-model="selectCon">
-                    <el-option v-for="item in connections" :label="item.name" :value="item.sourceId"
-                               :key="item.sourceId"></el-option>
-                </el-select>
                 <el-button @click="dialogisible=true">新增</el-button>
                 <sql-exec></sql-exec>
                 <sql-panel :table-name="tableName" :source-id="sourceId"></sql-panel>
@@ -37,11 +33,6 @@
                 selectCon: '',
                 sourceId: 'da33b70a-1358-4254-97a1-c1c5b5c7474a',
                 tableName: 'test',
-                props: {
-                    label: 'name',
-                    children: 'zones',
-                    isLeaf: 'leaf'
-                },
                 connections: [],
                 items: ['1', 2],
                 dialogisible: false
