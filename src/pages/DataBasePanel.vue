@@ -1,83 +1,57 @@
 <template>
-    <el-container>
-        <el-aside width="200px">
-            <el-tree @node-click="nodeClick" :data="connections" :expand-on-click-node="false"
-                     :props="props"
+    <div class="database-warpper">
+        <el-tree :data="connections" :expand-on-click-node="false"
+                 :props="props" isLeaf="true">
 
-                     lazy
-            ></el-tree>
-        </el-aside>
-        <el-main>Main</el-main>
-    </el-container>
+
+            <span class="custom-tree-node" slot-scope="{ node ,data}">
+
+               <icon-font :name="data.connection.type"></icon-font>
+                <span>    {{ node.label }}</span>
+
+      </span>
+        </el-tree>
+    </div>
 </template>
 
 <script>
-    import main from "../js/main";
+
+
+    import IconFont from "../components/IconFont";
 
     export default {
         name: "DataBasePanel",
+        components: {IconFont},
         props: ['connections'],
         data() {
             return {
                 props: {
-                    label: 'name',
-                    children: 'zones',
-                    isLeaf: 'leaf'
+                    label: 'name'
+
                 }
             }
         }, methods: {
-            async nodeClick(data, node) {
-                if (node.childNodes.length != 0) return
 
-                if (data.sourceId != null && node.level === 1) {
-                    const dataBase = await main.getDataBase(data.sourceId);
-                    let nodeList = []
-                    for (let i = 0; i < dataBase.length; i++) {
-                        nodeList.push({name: dataBase[i]})
-                    }
-                    node.childNodes = [];
-                    node.doCreateChildren(nodeList)
-                    // this.loadNode(node,)
-                    node.expand()
-                } else (node.level === 2)
-                {
-                    if (node.parent.data.sourceId) {
-                        const tables = await main.getTables(node.parent.data.sourceId, node.label)
-                        let nodeList = []
-                        for (let i = 0; i < tables.length; i++) {
-                            nodeList.push({name: tables[i].tableName})
-                        }
-                        node.childNodes = [];
-                        node.doCreateChildren(nodeList)
-                    }
-
-                }
-            }
-            ,
-            getTables(dbId) {
-
-                return this.items.filter(t => t.id === dbId)
+            append(data) {
+                console.log(data);
             },
-            changeDataBase(item) {
-                console.log(item);
-            },
-            async getDataBase(data, node) {
-                if (data.sourceId != null && node.level === 1) {
-                    const dataBase = await main.getDataBase(data.sourceId);
-                    let nodeList = []
-                    for (let i = 0; i < dataBase.length; i++) {
-                        nodeList.push({name: dataBase[i]})
-                    }
-                    node.childNodes = [];
-                    node.doCreateChildren(nodeList)
-                    // this.loadNode(node,)
-                    node.expand()
-                }
+            renderContent(h, {node}) {
+                console.log(node);
+                return (`  <span class="custom-tree-node">
+                    <span>111</span>
+                    <span>
+
+                </span>
+                </span>`);
             }
         }
     }
 </script>
 
 <style scoped>
+    .database-warpper {
+        box-sizing: border-box;
+        height: 100vh;
 
+    }
 </style>

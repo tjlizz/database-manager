@@ -25,6 +25,7 @@
     import SqlPanel from "../pages/SqlPanel";
     import SqlExec from "../pages/SqlExec";
     import DataBasePanel from "../pages/DataBasePanel";
+    import main from "../js/main";
 
     export default {
         name: 'Home',
@@ -40,7 +41,16 @@
             }
         },
         methods: {
-            addItem(item) {
+            async addItem(item) {
+                console.log(item);
+                item['leaf'] = true
+                const tables = await main.getTables(item.sourceId, item.connection.dataBaseName)
+                let nodeList = []
+                for (let i = 0; i < tables.length; i++) {
+                    nodeList.push({name: tables[i].tableName,connection:{type:'table'}})
+                }
+
+                item.children = nodeList
                 this.connections.push(item)
                 this.dialogisible = false
             }

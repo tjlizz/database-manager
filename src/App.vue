@@ -9,6 +9,13 @@
 </template>
 
 <style lang="scss">
+
+    *{
+        box-sizing: border-box;
+        border: 0;
+        margin: 0;
+        padding: 0;
+    }
     .icon {
         width: 1em;
         height: 1em;
@@ -16,7 +23,6 @@
         fill: currentColor;
         overflow: hidden;
     }
-
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -26,7 +32,7 @@
     }
 
     #nav {
-        padding: 30px;
+
 
         a {
             font-weight: bold;
@@ -38,3 +44,8 @@
         }
     }
 </style>
+<script>
+    export default {
+
+    }
+</script>

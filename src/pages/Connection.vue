@@ -51,6 +51,10 @@
                     {
                         value: 'mysql',
                         label: 'mysql'
+                    },
+                    {
+                        value: 'dm',
+                        label: '达梦'
                     }
                 ],
                 connection: {
