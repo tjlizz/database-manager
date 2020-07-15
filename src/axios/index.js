@@ -15,6 +15,7 @@ axios.interceptors.response.use(res => {
     //在这里对返回的数据进行处理
     return res.data;
 }, err => {
+    console.log(err);
     console.log('网络开了小差！请重试...');
     return Promise.reject(err);
 })
