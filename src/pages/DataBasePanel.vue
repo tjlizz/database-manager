@@ -7,7 +7,7 @@
             <span class="custom-tree-node" slot-scope="{ node ,data}">
 
                <icon-font :name="data.connection.type"></icon-font>
-                <span>    {{ node.label }}</span>
+                <span @dblclick="showData(node)">    {{ node.label }}</span>
 
       </span>
         </el-tree>
@@ -16,7 +16,7 @@
 
 <script>
 
-
+    // import main from '../js/main'
     import IconFont from "../components/IconFont";
 
     export default {
@@ -31,7 +31,12 @@
                 }
             }
         }, methods: {
-
+            async showData(node) {
+                const sourceId = node.parent.data.sourceId
+                const tableName = node.label
+                // const data = await main.getTableList(sourceId, tableName);
+                this.$emit('click', {sourceId, tableName})
+            },
             append(data) {
                 console.log(data);
             },
@@ -51,7 +56,7 @@
 <style scoped>
     .database-warpper {
         box-sizing: border-box;
-        height: 100vh;
+        height: 90vh;
 
     }
 </style>

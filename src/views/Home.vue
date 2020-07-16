@@ -10,20 +10,12 @@
                 </el-dialog>
             </el-header>
             <el-container>
-                <el-aside width="500px">
-                    <data-base-panel :connections="connections"></data-base-panel>
+                <el-aside width="200px">
+                    <data-base-panel @click="showData" :connections="connections"></data-base-panel>
                 </el-aside>
                 <el-main>
-                    <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
-                        <el-tab-pane
-                                :key="item.name"
-                                v-for="(item) in editableTabs"
-                                :label="item.title"
-                                :name="item.name"
-                        >
-                            {{item.content}}
-                        </el-tab-pane>
-                    </el-tabs>
+                    <sql-exec></sql-exec>
+                    <sql-panel  v-if="sourceId!=''"   :source-id="sourceId" :table-name="tableName"></sql-panel>
 
                 </el-main>
             </el-container>
@@ -38,35 +30,38 @@
     import Connection from "../pages/Connection";
     import DataBasePanel from "../pages/DataBasePanel";
     import main from "../js/main";
+    import SqlPanel from "../pages/SqlPanel";
+    import SqlExec from "../pages/SqlExec";
 
     export default {
         name: 'Home',
         data() {
             return {
-                editableTabsValue: '2',
-                editableTabs: [{
-                    title: 'Tab 1',
-                    name: '1',
-                    content: 'Tab 1 content'
-                }, {
-                    title: 'Tab 2',
-                    name: '2',
-                    content: 'Tab 2 content'
-                }],
-                tabIndex: 2,
+                sourceId: '',
+                tableName: '',
                 connections: [],
                 dialogisible: false
 
             }
         },
         methods: {
+
+            showData({sourceId, tableName}) {
+                this.sourceId = sourceId;
+                this.tableName = tableName;
+            },
             async addItem(item) {
                 console.log(item);
                 item['leaf'] = true
                 const tables = await main.getTables(item.sourceId, item.connection.dataBaseName)
                 let nodeList = []
                 for (let i = 0; i < tables.length; i++) {
-                    nodeList.push({name: tables[i].tableName, connection: {type: 'table'}})
+                    nodeList.push({
+                        name: tables[i].tableName, connection: {
+                            type: 'table',
+                            sourceId: item.sourceId
+                        }
+                    })
                 }
 
                 item.children = nodeList
@@ -75,6 +70,8 @@
             }
         },
         components: {
+            SqlExec,
+            SqlPanel,
             DataBasePanel,
             Connection,
 

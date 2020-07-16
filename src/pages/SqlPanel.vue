@@ -1,9 +1,10 @@
 <template>
-    <el-table :data="tableData">
+    <el-table :data="tableData" max-height="500px" stripe border>
         <el-table-column v-for="item in columdItem" :key="item.prop"
                          :prop=item.columnName
+                         align="center"
                          :label=item.columnName
-                         width="180">
+                          >
         </el-table-column>
 
     </el-table>
@@ -20,9 +21,27 @@
                 columdItem: [],
                 tableData: []
             }
-        }, async mounted() {
-            const data = await main.getColumns(this.sourceId, this.tableName)
-            this.columdItem = data
+        }, methods: {
+
+            async dataload() {
+                const data = await main.getColumns(this.sourceId, this.tableName)
+                this.columdItem = data
+                const tableData = await main.getTableList(this.sourceId, this.tableName);
+                // eslint-disable-next-line no-debugger
+                debugger
+                this.tableData = tableData;
+
+            }
+        },
+
+        mounted() {
+            this.dataload()
+
+
+        }, watch: {
+            tableName: function () {
+                this.dataload()
+            }
         }
     }
 </script>

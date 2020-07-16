@@ -1,3 +1,4 @@
+
 const getDataBase = async (sourceId) => {
     return await window.axios({
         url: 'v1/database/' + sourceId,
@@ -14,7 +15,8 @@ const createConnection = async (connection) => {
 }
 
 const getColumns = async (sourceId, tableName) => {
-
+// eslint-disable-next-line no-debugger
+debugger
     const data = await window.axios({
         method: 'post',
         url: 'v1/columns/' + sourceId,
@@ -32,7 +34,15 @@ const getTables = async (sourceId, dataBaseName) => {
     })
     return data
 }
+
+ const  getTableList=async (sourceId,tableName)=>{
+    const  data= await  window.axios({
+         method:'get',
+        url:'v1/table/list/'+sourceId+"/"+tableName
+    })
+     return  data;
+ }
 const main = {
-    createConnection, getDataBase, getColumns, getTables
+    createConnection, getDataBase, getColumns, getTables,getTableList
 }
 export default main
