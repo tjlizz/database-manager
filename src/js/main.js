@@ -35,10 +35,11 @@ const getTables = async (sourceId, dataBaseName) => {
     return data
 }
 
- const  getTableList=async (sourceId,tableName)=>{
+ const  getTableList=async (sqlVo)=>{
     const  data= await  window.axios({
-         method:'get',
-        url:'v1/table/list/'+sourceId+"/"+tableName
+         method:'post',
+        url:'v1/table/list/',
+        data:sqlVo
     })
      return  data;
  }

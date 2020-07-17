@@ -14,7 +14,6 @@
                     <data-base-panel @click="showData" :connections="connections"></data-base-panel>
                 </el-aside>
                 <el-main>
-                    <sql-exec></sql-exec>
                     <sql-panel  v-if="sourceId!=''"   :source-id="sourceId" :table-name="tableName"></sql-panel>
 
                 </el-main>
@@ -31,7 +30,6 @@
     import DataBasePanel from "../pages/DataBasePanel";
     import main from "../js/main";
     import SqlPanel from "../pages/SqlPanel";
-    import SqlExec from "../pages/SqlExec";
 
     export default {
         name: 'Home',
@@ -70,7 +68,6 @@
             }
         },
         components: {
-            SqlExec,
             SqlPanel,
             DataBasePanel,
             Connection,
