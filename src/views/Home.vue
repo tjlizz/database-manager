@@ -16,6 +16,7 @@
                 <el-main>
                     <sql-panel  v-if="sourceId!=''"   :source-id="sourceId" :table-name="tableName"></sql-panel>
 
+
                 </el-main>
             </el-container>
 

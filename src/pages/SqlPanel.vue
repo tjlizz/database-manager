@@ -16,16 +16,18 @@
             </el-table-column>
 
         </el-table>
+        <my-pagination></my-pagination>
     </div>
 </template>
 
 <script>
     import main from "../js/main";
     import SqlExec from "./SqlExec";
+    import MyPagination from "../components/MyPagination";
 
     export default {
         name: "SqlPanel",
-        components: {SqlExec},
+        components: {MyPagination, SqlExec},
         props: ["sourceId", "tableName"],
         data() {
             return {
