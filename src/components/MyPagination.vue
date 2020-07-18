@@ -11,8 +11,9 @@
 
         <el-button size="mini" class="el-icon-arrow-left" @click="pageIndex--"
                    :disabled="pageIndex===1?true:false"></el-button>
-        <span @click="currentChange(n)" v-bind:class="{active:pageIndex==n}" v-for="n in pageCount"
-              :key="n">{{n}}</span>
+        <span @click="currentChange(1)" v-bind:class="{active:pageIndex==1}">1</span>
+        <span @click="currentChange((n+1))" v-bind:class="{active:pageIndex==(n+1)}" v-for="n in 8"
+              :key="n">{{n+1}}</span>
         <el-button size="mini" class="el-icon-arrow-right" @click="pageIndex++"
                    :disabled="pageIndex===pageCount"></el-button>
     </div>

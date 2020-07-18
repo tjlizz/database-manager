@@ -16,6 +16,8 @@
             </el-table-column>
 
         </el-table>
+
+
         <my-pagination :total-count="totalCount" @pageChanged="pageChanged"></my-pagination>
     </div>
 </template>
@@ -35,7 +37,7 @@
                 tableData: [],
                 pageIndex: 1,
                 pageSize: 100,
-                totalCount:100,
+                totalCount: 0,
 
                 sqlText: ''
             }
@@ -56,7 +58,8 @@
                 });
                 // eslint-disable-next-line no-debugger
                 debugger
-                this.tableData = tableData;
+                this.tableData = tableData.data;
+                this.totalCount = tableData.totalCount
 
             },
             search({count, sqlText}) {
@@ -64,6 +67,7 @@
                 debugger
                 this.pageSize = count;
                 this.sqlText = sqlText;
+
             }
         },
 
