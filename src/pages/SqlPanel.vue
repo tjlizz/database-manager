@@ -16,7 +16,7 @@
             </el-table-column>
 
         </el-table>
-        <my-pagination></my-pagination>
+        <my-pagination :total-count="totalCount" @pageChanged="pageChanged"></my-pagination>
     </div>
 </template>
 
@@ -33,18 +33,25 @@
             return {
                 columdItem: [],
                 tableData: [],
-                count: 100,
+                pageIndex: 1,
+                pageSize: 100,
+                totalCount:100,
+
                 sqlText: ''
             }
         }, methods: {
-
+            pageChanged({pageIndex, pageSize}) {
+                this.pageSize = pageSize;
+                this.pageIndex = pageIndex
+            },
             async dataload() {
                 const data = await main.getColumns(this.sourceId, this.tableName)
                 this.columdItem = data
                 const tableData = await main.getTableList({
                     sqlText: this.sqlText,
                     sourceId: this.sourceId,
-                    count: this.count,
+                    pageSize: this.pageSize,
+                    pageIndex: this.pageIndex,
                     tableName: this.tableName
                 });
                 // eslint-disable-next-line no-debugger
@@ -55,7 +62,7 @@
             search({count, sqlText}) {
                 // eslint-disable-next-line no-debugger
                 debugger
-                this.count = count;
+                this.pageSize = count;
                 this.sqlText = sqlText;
             }
         },
@@ -68,11 +75,15 @@
             tableName: function () {
                 this.dataload()
             },
-            count:function () {
+            pageSize: function () {
                 this.dataload()
 
             },
-            sqlText:function () {
+            pageIndex: function () {
+                this.dataload()
+
+            },
+            sqlText: function () {
                 this.dataload()
 
             }

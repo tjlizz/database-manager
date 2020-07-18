@@ -78,7 +78,7 @@ export default {
         userName: "root",
         passWord: "1qaz@WSX",
         type: "mysql",
-        dataBaseName: "test",
+        dataBaseName: "api-server",
       },
     };
   },
