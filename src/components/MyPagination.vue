@@ -8,14 +8,18 @@
                     :value="item.value">
             </el-option>
         </el-select>
-
+        <el-button size="mini" class="el-icon-d-arrow-left" @click="pageIndex=pageIndex-3" v-if="pageIndex>6"
+                   :disabled="pageIndex===1?true:false"></el-button>
         <el-button size="mini" class="el-icon-arrow-left" @click="pageIndex--"
                    :disabled="pageIndex===1?true:false"></el-button>
         <span @click="currentChange(1)" v-bind:class="{active:pageIndex==1}">1</span>
-        <span @click="currentChange((n+1))" v-bind:class="{active:pageIndex==(n+1)}" v-for="n in 8"
+        <span @click="currentChange((n+1))" v-bind:class="{active:pageIndex==(n+1)}" v-for="n in pageList"
               :key="n">{{n+1}}</span>
+        <span @click="currentChange(pageCount)" v-bind:class="{active:pageIndex==pageCount}">{{pageCount}}</span>
         <el-button size="mini" class="el-icon-arrow-right" @click="pageIndex++"
                    :disabled="pageIndex===pageCount"></el-button>
+        <el-button size="mini" class="el-icon-d-arrow-right" @click="pageIndex=pageIndex+3" v-if="pageIndex<pageCount-3"
+        ></el-button>
     </div>
 </template>
 
@@ -28,6 +32,8 @@
                 pageSize: 20,
                 pageIndex: 1,
                 pageCount: 10,
+                pageList: [1, 2, 3, 4, 5, 6, 7, 8],
+                startPage: 2,
                 sizeOptions: [
                     {label: '10条/页', value: 10},
                     {label: '20条/页', value: 20},
@@ -36,6 +42,16 @@
             }
         },
         methods: {
+            getPageList() {
+                let list = []
+                let endPage = this.startPage + 8;
+                if (endPage > this.pageCount) endPage = this.pageCount - 1
+                let startPage = this.startPage;
+                for (let i = startPage - 3; i < endPage; i++) {
+                    list.push(i)
+                }
+                this.pageList = list;
+            },
             currentChange(pageIndex) {
                 this.pageIndex = pageIndex;
                 this.$emit('pageChanged', {pageIndex: this.pageIndex, pageSize: this.pageSize})
@@ -48,6 +64,11 @@
             this.$emit('pageChanged', {pageIndex: this.pageIndex, pageSize: this.pageSize})
         }, watch: {
             pageIndex: function () {
+                this.startPage = this.pageIndex
+                if (this.startPage > 3)
+                    this.getPageList()
+                else
+                    this.pageList = [1, 2, 3, 4, 5, 6, 7, 8]
                 this.$emit('pageChanged', {pageIndex: this.pageIndex, pageSize: this.pageSize})
             },
             pageSize: function () {
