@@ -1,6 +1,7 @@
 <template>
-    <div class="my-pagination">
-        <el-select v-model="pageSize" placeholder="请选择" size="small" style="width: 100px">
+    <div class="my-pagination" v-if="pageCount>8">
+
+        <el-select v-model="pageSize" placeholder="请选择" size="small" style="width: 100px" v-if="defaultSize==null">
             <el-option
                     v-for="item in sizeOptions"
                     :key="item.value"
@@ -12,24 +13,26 @@
                    :disabled="pageIndex===1?true:false"></el-button>
         <el-button size="mini" class="el-icon-arrow-left" @click="pageIndex--"
                    :disabled="pageIndex===1?true:false"></el-button>
-        <span @click="currentChange(1)" v-bind:class="{active:pageIndex==1}">1</span>
-        <span @click="currentChange((n+1))" v-bind:class="{active:pageIndex==(n+1)}" v-for="n in pageList"
+        <span @click="currentChange(1)" class="item" v-bind:class="{active:pageIndex==1}">1</span>
+        <span @click="currentChange((n+1))" class="item" v-bind:class="{active:pageIndex==(n+1)}" v-for="n in pageList"
               :key="n">{{n+1}}</span>
-        <span @click="currentChange(pageCount)" v-bind:class="{active:pageIndex==pageCount}">{{pageCount}}</span>
+        <span @click="currentChange(pageCount)" class="item"
+              v-bind:class="{active:pageIndex==pageCount}">{{pageCount}}</span>
         <el-button size="mini" class="el-icon-arrow-right" @click="pageIndex++"
                    :disabled="pageIndex===pageCount"></el-button>
         <el-button size="mini" class="el-icon-d-arrow-right" @click="pageIndex=pageIndex+3" v-if="pageIndex<pageCount-3"
         ></el-button>
+        <span class="totalCount">共{{totalCount}}条</span>
     </div>
 </template>
 
 <script>
     export default {
         name: 'MyPagination',
-        props: ['totalCount'],
+        props: ['totalCount', 'defaultSize'],
         data() {
             return {
-                pageSize: 20,
+                pageSize: this.defaultSize || 20,
                 pageIndex: 1,
                 pageCount: 10,
                 pageList: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -43,6 +46,8 @@
         },
         methods: {
             getPageList() {
+                // eslint-disable-next-line no-debugger
+                debugger
                 let list = []
                 let endPage = this.startPage + 8;
                 if (endPage > this.pageCount) endPage = this.pageCount - 1
@@ -57,11 +62,16 @@
                 this.$emit('pageChanged', {pageIndex: this.pageIndex, pageSize: this.pageSize})
             },
             resetPageCount() {
+                // eslint-disable-next-line no-debugger
+                debugger
                 this.pageCount = Math.ceil(this.totalCount / this.pageSize)
             }
         }, mounted() {
             this.resetPageCount()
             this.$emit('pageChanged', {pageIndex: this.pageIndex, pageSize: this.pageSize})
+
+
+
         }, watch: {
             pageIndex: function () {
                 this.startPage = this.pageIndex
@@ -77,6 +87,13 @@
             },
             totalCount: function () {
                 this.resetPageCount()
+                let pageList = []
+                if (this.pageCount < 8) {
+                    for (let i = 1; i <= this.pageCount; i++) {
+                        pageList.push(i)
+                    }
+                    this.pageList = pageList;
+                }
             }
 
         }
@@ -91,7 +108,19 @@
         padding: 5px;
         margin: 5px 0px;
 
-        > span {
+        > .totalCount {
+            color: #606266;
+            font-size: 13px;
+            font-weight: 400;
+            display: inline-block;
+            vertical-align: top;
+            height: 28px;
+            line-height: 28px;
+            margin-left: 10px;
+            vertical-align: top;
+        }
+
+        > .item {
             cursor: pointer;
             margin: 0 5px;
             color: #606266;

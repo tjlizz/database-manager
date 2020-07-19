@@ -2,7 +2,7 @@
 
     <div>
         <sql-exec @search="search"></sql-exec>
-        <el-table :data="tableData" max-height="500px" stripe border>
+        <el-table :data="tableData" size="small" max-height="700px" stripe border>
             <el-table-column
                     align="center"
                     type="index"
@@ -18,7 +18,7 @@
         </el-table>
 
 
-        <my-pagination :total-count="totalCount" @pageChanged="pageChanged"></my-pagination>
+        <my-pagination :total-count="totalCount" @pageChanged="pageChanged" default-size="100"></my-pagination>
     </div>
 </template>
 
