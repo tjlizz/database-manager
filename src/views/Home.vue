@@ -3,11 +3,19 @@
 
         <el-container>
             <el-header>
-                <el-button @click="dialogisible=true">新增</el-button>
-                <el-dialog :visible.sync="dialogisible">
-                    <connection @click="addItem"></connection>
+                <div class="total-warpper">
 
-                </el-dialog>
+                    <div class="new-connection">
+
+                        <el-button icon="el-icon-plus"  @click="dialogisible=true"></el-button>
+
+                    </div>
+                    <el-dialog :visible.sync="dialogisible">
+                        <connection @click="addItem"></connection>
+
+                    </el-dialog>
+                </div>
+
             </el-header>
             <el-container>
                 <el-aside width="200px">
@@ -15,13 +23,12 @@
                 </el-aside>
                 <el-main>
 
-                    <el-tabs v-model="editableTabsValue" type="card" editable @edit="handleTabsEdit">
+                    <el-tabs v-model="editableTabsValue" type="card"  closable @edit="handleTabsEdit">
                         <el-tab-pane
                                 :key="item.name"
                                 v-for="(item) in editableTabs"
                                 :label="item.title"
-                                :name="item.name"
-                        >
+                                :name="item.name"                        >
                             <component :source-id="item.sourceId" :table-name="item.tableName"
                                        :is="activeName"></component>
                         </el-tab-pane>
@@ -43,6 +50,7 @@
     import DataBasePanel from "../pages/DataBasePanel";
     import main from "../js/main";
     import SqlPanel from "../pages/SqlPanel";
+    import IconFont from "../components/IconFont";
 
     export default {
         name: 'Home',
@@ -126,6 +134,7 @@
             }
         },
         components: {
+            IconFont,
             SqlPanel,
             DataBasePanel,
             Connection,
@@ -133,3 +142,19 @@
         }
     }
 </script>
+
+
+<style scoped lang="scss">
+
+    .total-warpper {
+        display: flex;
+        align-content: center;
+        justify-content: flex-start;
+        margin-top: 10px;
+
+        > .new-connection {
+            text-align: center;
+            padding: 5px 8px;
+        }
+    }
+</style>
