@@ -78,12 +78,12 @@
                 ],
                 connection: {
                     name: "aa",
-                    host: "cdb-n7awaf8u.bj.tencentcdb.com",
-                    port: "10029",
-                    userName: "root",
-                    passWord: "1qaz@WSX",
-                    type: "mysql",
-                    dataBaseName: "api-server",
+                    host: "127.0.0.1",
+                    port: "5001",
+                    userName: "lzz",
+                    passWord: "123456",
+                    type: "postgresql",
+                    dataBaseName: "lzz",
                 },
             };
         },

@@ -62,10 +62,9 @@
                 this.totalCount = tableData.totalCount
 
             },
-            search({count, sqlText}) {
+            search({ sqlText}) {
                 // eslint-disable-next-line no-debugger
                 debugger
-                this.pageSize = count;
                 this.sqlText = sqlText;
 
             }
